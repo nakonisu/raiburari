@@ -1,33 +1,43 @@
-# 関数系
-## 累乗の計算
-``` Cpp
-// 累乗の計算をするpower
-// power(a,b) でaのb乗
+# 定数
+``` cpp
+const long long INFLL = 1LL << 60;
+const int INFINT = INT_MAX / 2;
+const double PIE = acos(-1);
+```
 
-long long power(long long a, long long b) {
+# 関数系
+## 累乗の計算ok
+``` cpp
+// 累乗の計算をするpower
+// modで割ったあまりを出力
+// power(a,b,mod) でaのb乗のmod
+// mod は1e18とかにすれば普通にも使える
+
+long long power(long long a, long long b, long long mod = 1e18) {
     if (b < 0) {
         cerr << "負の数乗。今回は逆数出したる。\n";
-        return power(a, abs(b));
+        return power(a, abs(b), mod);
     } else if (b == 0) {
         return 1;
     } else if (b == 1) {
-        return a;
+        return a % mod;
     } else {
-        return power(a, b / 2) * power(a, b / 2) * power(a, b % 2);
+        long long temp = power(a, b / 2, mod);
+        temp = (temp * temp) % mod;
+        if (b % 2 == 1) temp *= a;
+        temp = temp % mod;
+        return temp;
     }
 }
 ```
-## 最小公倍数
+## 最小公倍数ok
 ``` cpp
-// 最大公約数はgcd、標準装備！
 // 最小公倍数の計算！
 // lcm(a, b)でaとbの最小公倍数
 long long lcm(long long a, long long b) {
     long long d = gcd(a, b);
     return a / d * b;
 }
-
-
 ```
 # 文字列操作系関数
 ## 文字列から数字へのキャスト
@@ -40,7 +50,7 @@ long long strToLong(string s) {
     long long keta = (long long)(s).size();
     long long ans = 0;
     for (int i = keta - 1; i >= 0; i--) {
-        ans += (int)(s.at(i) - '0') * power(10, keta - i - 1);
+        ans += (int)(s.at(i) - '0') * power(10, keta - i - 1, 1e18);
     }
     return ans;
 }
@@ -64,8 +74,6 @@ string longToStr(long long n) {
 ```
 # 文字列操作方法
 ```cpp
-string s, t;
-
 // 文字列の反転
 reverse(s.begin(), s.end());  // "abc"->"cba"
 
@@ -77,6 +85,7 @@ s += t;  // s="abcd"
 ```
  
 # 出力系
+## 桁数指定
 ```cpp
 // 小数点*以下*の桁数指定
 // cout << fixed << setprecision(桁数) << ;
@@ -88,13 +97,16 @@ cout << fixed << setprecision(2) << 3.0;    // "3.00"
 cout << setprecision(2) << 12.3;  // "12"
 // 小数部のゼロ埋めがされない
 cout << setprecision(2) << 3.0;  // "3" (3.0ではない)
-
-// 0埋め
+```
+## 0埋め
+``` cpp
 // cout << setw(桁数) << setfill(埋める文字) << ;
 cout << setw(4) << setfill('0') << 12 << endl;       // ”0012”
 cout << setfill('0') << left << std::setw(4) << 12;  // "1200"
 cout << setfill(' ');  // ゼロ埋め・解除（デフォルトに戻す）
-
+```
+## YesNoの出力
+```cpp
 // YesNoの出力
 void YesNo(bool b) {
     if (b)
@@ -105,6 +117,7 @@ void YesNo(bool b) {
 ```
 
 # ソートなどの操作
+## 別引数のソート
 ```cpp
 vector<ll> a;
 // sort ソート 別引数によるソート(2番目の要素とか)
@@ -112,13 +125,14 @@ sort(a.begin(), a.end(),
         [](const vector<ll> &alpha, const vector<ll> &beta) {
             return alpha[0] < beta[0];
         });
-
+```
+## 順列全探索
+```cpp
 
 // 順列すべての全探索
 // nextpermutation使う
-long long n;  // 順列の個数(n個の並び替え)
+// nums = {0,0,1,1}などとすることで組み合わせの全探索も可能
 
-// ここでnums を{0, 1, 2, 3...} にする
 vector<int> nums(n);
 for (int i = 0; i < n; i++) {
     nums[i] = i;
@@ -129,6 +143,8 @@ do {
 } while (next_permutation(nums.begin(), nums.end()));
 
 ```
+## upper_bound,lower_bound
+
 
 # 構造体
 ```cpp
@@ -180,3 +196,5 @@ struct unionfind {
     bool same(ll x, ll y) { return (find(x) == find(y)) ? true : false; }
 };
 ```
+
+
