@@ -1,4 +1,5 @@
 # 関数系
+## 累乗の計算
 ``` Cpp
 // 累乗の計算をするpower
 // power(a,b) でaのb乗
@@ -15,7 +16,9 @@ long long power(long long a, long long b) {
         return power(a, b / 2) * power(a, b / 2) * power(a, b % 2);
     }
 }
-
+```
+## 最小公倍数
+``` cpp
 // 最大公約数はgcd、標準装備！
 // 最小公倍数の計算！
 // lcm(a, b)でaとbの最小公倍数
@@ -27,6 +30,7 @@ long long lcm(long long a, long long b) {
 
 ```
 # 文字列操作系関数
+## 文字列から数字へのキャスト
 ``` cpp
 // 文字列から数字へのキャスト
 // stringからlonglongへのキャスト
@@ -40,7 +44,9 @@ long long strToLong(string s) {
     }
     return ans;
 }
-
+```
+## 数字から文字列へのキャスト
+``` cpp
 
 // longlongをstringに変換（数字を文字列に変換）
 
