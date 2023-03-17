@@ -123,7 +123,7 @@ vector<ll> a;
 // sort ソート 別引数によるソート(2番目の要素とか)
 sort(a.begin(), a.end(),
         [](const vector<ll> &alpha, const vector<ll> &beta) {
-            return alpha[0] < beta[0];
+            return alpha[1] < beta[1];
         });
 ```
 ## 順列全探索
@@ -144,8 +144,34 @@ do {
 
 ```
 ## upper_bound,lower_bound
+```cpp
+// ソートが必要！！
+    // lower_bound
+    // key以上の要素の内の一番左側のイテレータを返す
+    // a.begin()引けばkeyより小さい要素の個数がわかる
+    // a.end()から引けばkey以上の個数がわかる
 
+    vector<int> a = {1, 3, 3, 4, 5};
+    auto iter1 = lower_bound(a.begin(), a.end(), 0);  // iter1 - a.begin() = 0
+    auto iter2 = lower_bound(a.begin(), a.end(), 2);  // iter2 - a.begin() = 1
+    auto iter3 = lower_bound(a.begin(), a.end(), 3);  // iter3 - a.begin() = 1
+    auto iter4 = lower_bound(a.begin(), a.end(), 6);  // iter4 - a.begin() = 5
 
+    // ソートが必要！！
+    // upper_bound
+    // keyより大きい要素の内の一番左側のイテレータを返す
+    // a.begin()引けばkey以下の個数がわかる
+    // a.end()から引けばkeyより大きい個数がわかる
+
+    auto iter5 = upper_bound(a.begin(), a.end(), 0);  // iter5 - a.begin() = 0
+    auto iter6 = upper_bound(a.begin(), a.end(), 2);  // iter6 - a.begin() = 1
+    auto iter7 = upper_bound(a.begin(), a.end(), 3);  // iter7 - a.begin() = 3
+    auto iter8 = upper_bound(a.begin(), a.end(), 6);  // iter8 - a.begin() = 5
+
+    // upper-lowerでその要素の個数がわかる
+    // iter5-iter1 = 0
+    // iter7-iter3 = 2
+```
 # 構造体
 ```cpp
 //UnionFind!!!
