@@ -6,13 +6,12 @@ const double PIE = acos(-1);
 ```
 
 # 関数系
-## 累乗の計算ok
+## 累乗の計算
+- 累乗の計算をするpower
+- modで割ったあまりを出力
+- mod を1e18とかにすれば普通にも使える
 ``` cpp
-// 累乗の計算をするpower
-// modで割ったあまりを出力
 // power(a,b,mod) でaのb乗のmod
-// mod は1e18とかにすれば普通にも使える
-
 long long power(long long a, long long b, long long mod = 1e18) {
     if (b < 0) {
         cerr << "負の数乗。今回は逆数出したる。\n";
@@ -30,9 +29,8 @@ long long power(long long a, long long b, long long mod = 1e18) {
     }
 }
 ```
-## 最小公倍数ok
+## 最小公倍数
 ``` cpp
-// 最小公倍数の計算！
 // lcm(a, b)でaとbの最小公倍数
 long long lcm(long long a, long long b) {
     long long d = gcd(a, b);
@@ -41,10 +39,10 @@ long long lcm(long long a, long long b) {
 ```
 # 文字列操作系関数
 ## 文字列から数字へのキャスト
+- 文字列から数字へのキャスト
+- stringからlonglongへのキャスト
+- **powerも使う！！**
 ``` cpp
-// 文字列から数字へのキャスト
-// stringからlonglongへのキャスト
-// powerも使う！！
 // strToLong(string s) でsをlonglongに変えたものを出力
 long long strToLong(string s) {
     long long keta = (long long)(s).size();
@@ -56,10 +54,10 @@ long long strToLong(string s) {
 }
 ```
 ## 数字から文字列へのキャスト
+- longlongをstringに変換（数字を文字列に変換）
+
 ``` cpp
-
-// longlongをstringに変換（数字を文字列に変換）
-
+// longToStr(n)でnをstringに変換したものを出力
 string longToStr(long long n) {
     long long k = abs(n);
     string revStr = "";
@@ -81,24 +79,26 @@ reverse(s.begin(), s.end());  // "abc"->"cba"
 s = "ab";
 t = "cd";
 s += t;  // s="abcd"
-
 ```
  
 # 出力系
 ## 桁数指定
+### 小数点*以下*の桁数指定
+` cout << fixed << setprecision(桁数) << ;`
 ```cpp
-// 小数点*以下*の桁数指定
-// cout << fixed << setprecision(桁数) << ;
 cout << fixed << setprecision(2) << 3.141;  // "3.14"
 cout << fixed << setprecision(2) << 3.0;    // "3.00"
-
-// 全体の桁数指定
-// 小数部は出力されない
+```
+### 全体の桁数指定
+- 小数部は出力されない
+```cpp
 cout << setprecision(2) << 12.3;  // "12"
-// 小数部のゼロ埋めがされない
+```
+- 小数部のゼロ埋めがされない
+``` cpp
 cout << setprecision(2) << 3.0;  // "3" (3.0ではない)
 ```
-## 0埋め
+### 0埋め
 ``` cpp
 // cout << setw(桁数) << setfill(埋める文字) << ;
 cout << setw(4) << setfill('0') << 12 << endl;       // ”0012”
@@ -173,7 +173,7 @@ auto iter8 = upper_bound(a.begin(), a.end(), 6);  // iter8 - a.begin() = 5
 // iter7-iter3 = 2
 ```
 # 構造体
-## unionfind
+## UnionFind
 ```cpp
 //UnionFind!!!
 struct unionfind {
