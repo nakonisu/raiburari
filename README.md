@@ -116,7 +116,7 @@ void YesNo(bool b) {
 }
 ```
 
-# ソートなどの操作
+# ソートなどの操作方法
 ## 別引数のソート
 ```cpp
 vector<ll> a;
@@ -146,33 +146,34 @@ do {
 ## upper_bound,lower_bound
 ```cpp
 // ソートが必要！！
-    // lower_bound
-    // key以上の要素の内の一番左側のイテレータを返す
-    // a.begin()引けばkeyより小さい要素の個数がわかる
-    // a.end()から引けばkey以上の個数がわかる
+// lower_bound
+// key以上の要素の内の一番左側のイテレータを返す
+// a.begin()引けばkeyより小さい要素の個数がわかる
+// a.end()から引けばkey以上の個数がわかる
 
-    vector<int> a = {1, 3, 3, 4, 5};
-    auto iter1 = lower_bound(a.begin(), a.end(), 0);  // iter1 - a.begin() = 0
-    auto iter2 = lower_bound(a.begin(), a.end(), 2);  // iter2 - a.begin() = 1
-    auto iter3 = lower_bound(a.begin(), a.end(), 3);  // iter3 - a.begin() = 1
-    auto iter4 = lower_bound(a.begin(), a.end(), 6);  // iter4 - a.begin() = 5
+vector<int> a = {1, 3, 3, 4, 5};
+auto iter1 = lower_bound(a.begin(), a.end(), 0);  // iter1 - a.begin() = 0
+auto iter2 = lower_bound(a.begin(), a.end(), 2);  // iter2 - a.begin() = 1
+auto iter3 = lower_bound(a.begin(), a.end(), 3);  // iter3 - a.begin() = 1
+auto iter4 = lower_bound(a.begin(), a.end(), 6);  // iter4 - a.begin() = 5
 
-    // ソートが必要！！
-    // upper_bound
-    // keyより大きい要素の内の一番左側のイテレータを返す
-    // a.begin()引けばkey以下の個数がわかる
-    // a.end()から引けばkeyより大きい個数がわかる
+// ソートが必要！！
+// upper_bound
+// keyより大きい要素の内の一番左側のイテレータを返す
+// a.begin()引けばkey以下の個数がわかる
+// a.end()から引けばkeyより大きい個数がわかる
 
-    auto iter5 = upper_bound(a.begin(), a.end(), 0);  // iter5 - a.begin() = 0
-    auto iter6 = upper_bound(a.begin(), a.end(), 2);  // iter6 - a.begin() = 1
-    auto iter7 = upper_bound(a.begin(), a.end(), 3);  // iter7 - a.begin() = 3
-    auto iter8 = upper_bound(a.begin(), a.end(), 6);  // iter8 - a.begin() = 5
+auto iter5 = upper_bound(a.begin(), a.end(), 0);  // iter5 - a.begin() = 0
+auto iter6 = upper_bound(a.begin(), a.end(), 2);  // iter6 - a.begin() = 1
+auto iter7 = upper_bound(a.begin(), a.end(), 3);  // iter7 - a.begin() = 3
+auto iter8 = upper_bound(a.begin(), a.end(), 6);  // iter8 - a.begin() = 5
 
-    // upper-lowerでその要素の個数がわかる
-    // iter5-iter1 = 0
-    // iter7-iter3 = 2
+// upper-lowerでその要素の個数がわかる
+// iter5-iter1 = 0
+// iter7-iter3 = 2
 ```
 # 構造体
+## unionfind
 ```cpp
 //UnionFind!!!
 struct unionfind {
@@ -223,4 +224,64 @@ struct unionfind {
 };
 ```
 
+# 数学
+## 素数列挙（エラトステネス）
+``` cpp
+// エラトステネスの篩、素数列挙(鉄則本p160)
+// Nまでの素数を列挙してくれる
+vector<long long> makePrimeVec(int N) {
+    vector<bool> deleted(N + 1, false);
+    vector<ll> P = {};
+    for (int i = 2; i <= N; i++) {
+        if (!deleted[i]) {
+            for (int j = i * i; j <= N; j += i) {
+                deleted[j] = true;
+            }
+            P.emplace_back(i);
+        }
+    }
 
+    return P;
+}
+```
+
+## 素数判定1 試し割り
+``` cpp
+
+// 試し割り素数判定、nが素数かどうかを判定する
+bool isPrime(long long n) {
+    for (long long i = 2; i * i <= n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+```
+## 素数判定2ミラーラビン（高速！！！）
+```cpp
+// Miller-Rabin 素数判定
+// https://algo-method.com/tasks/513/editorial から拝借
+// powerが必要！
+bool isPrime(long long N) {
+    if (N <= 1) return false;
+    if (N == 2) return true;
+    if (N % 2 == 0) return false;
+    vector<long long> A = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
+    long long s = 0, d = N - 1;
+    while (d % 2 == 0) {
+        ++s;
+        d >>= 1;
+    }
+    for (auto a : A) {
+        if (a % N == 0) return true;
+        long long t, x = power(a, d, N);
+        if (x != 1) {
+            for (t = 0; t < s; ++t) {
+                if (x == N - 1) break;
+                x = __int128_t(x) * x % N;
+            }
+            if (t == s) return false;
+        }
+    }
+    return true;
+}
+```
