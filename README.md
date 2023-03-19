@@ -99,11 +99,13 @@ cout << setprecision(2) << 12.3;  // "12"
 cout << setprecision(2) << 3.0;  // "3" (3.0ではない)
 ```
 ### 0埋め
+- cout << setw(桁数) << setfill(埋める文字) << ;
 ``` cpp
-// cout << setw(桁数) << setfill(埋める文字) << ;
 cout << setw(4) << setfill('0') << 12 << endl;       // ”0012”
 cout << setfill('0') << left << std::setw(4) << 12;  // "1200"
 cout << setfill(' ');  // ゼロ埋め・解除（デフォルトに戻す）
+
+TODO 確認！！！
 ```
 ## YesNoの出力
 ```cpp
@@ -283,5 +285,80 @@ bool isPrime(long long N) {
         }
     }
     return true;
+}
+```
+
+## 階乗、二項係数、順列の場合の数
+- けんちょんさんのを拝借
+- https://drken1215.hatenablog.com/entry/2018/06/08/210000
+- maxを決めた前処理が必要
+- 階乗のMODも計算できる（副産物?）
+- **MOD確認** (MODは素数！)
+
+### 前処理の計算
+``` cpp
+// nCrを計算するための前処理、maxまでの階乗modをメモ化
+
+// fac->階乗,finv->階乗の逆元,inv->単に逆数？
+vector<long long> fac, finv, inv;
+const long long MOD = 1000000007;
+// テーブルを作る前処理
+void COMinit(ll max) {
+    fac.resize(max);
+    finv.resize(max);
+    inv.resize(max);
+    fac[0] = fac[1] = 1;
+    finv[0] = finv[1] = 1;
+    inv[1] = 1;
+    for (int i = 2; i < max; i++) {
+        fac[i] = fac[i - 1] * i % MOD;
+        inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
+        finv[i] = finv[i - 1] * inv[i] % MOD;
+    }
+}
+```
+### 二項係数の計算
+- **COMinitも必要**
+``` cpp
+// nCr(n,r)で二項係数を計算
+long long nCr(long long n, long long r) {
+    if (n < r) {
+        cerr << "n < r please" << endl;
+        return 0;
+    }
+    if (n < 0 || r < 0) {
+        cerr << "n>=0 & r>=0 please" << endl;
+        return 0;
+    }
+    return fac[n] * (finv[r] * finv[n - r] % MOD) % MOD;
+}
+```
+### 順列の計算！！
+-  **COMinitも必要**
+``` cpp
+// nPr(n,r)で順列を計算
+long long nPr(long long n, long long r) {
+    if (n < r) {
+        cerr << "n < r please" << endl;
+        return 0;
+    }
+    if (n < 0 || r < 0) {
+        cerr << "n>=0 & r>=0 please" << endl;
+        return 0;
+    }
+    return fac[n] * finv[n - r] % MOD;
+}
+```
+### 重複組合せの計算！！
+   **COMinitも必要**
+``` cpp
+// nHr(n,r)で重複組合せを計算
+long long nHr(long long n, long long r) {
+    if (n < 0 || r < 0) {
+        cerr << "n>=0 & r>=0 please" << endl;
+        return 0;
+    }
+    if (n == 0 & r == 0) return 1;
+    return nCr(n + r - 1, r);
 }
 ```
